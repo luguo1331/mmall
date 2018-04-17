@@ -194,12 +194,19 @@ public class UserServiceImpl implements IUserService {
     @Override
     public ServerResponse<User> getInformation(Integer userId) {
         User user = userMapper.selectByPrimaryKey(userId);
-        if(user == null){
+        if (user == null) {
             return ServerResponse.createByErrorByMessage("找不到当前用户");
         }
         user.setPassword(StringUtils.EMPTY);
         return ServerResponse.createBySuccess(user);
 
+    }
+
+    @Override
+    public ServerResponse checkAmdinRole(User user) {
+        if (user != null && user.getRole() == Const.Role.ROLE_ADMIN)
+            return ServerResponse.createBySuccess();
+        return ServerResponse.createByError();
     }
 
 }
